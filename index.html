@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>_Pooja_Shree_S | Mern Stack developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="./css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+    <script type="text/babel">
+      const { useState, useEffect, useRef, useMemo } = React;
+      const GH = "https://github.com/spoojashree2003-ux";
+      const PAGES = ["hello", "about-me", "projects", "contact-me"];
+
+      /* tiny syntax highlighter */
+      function Hl({ code }) {
+        const parts = code.split(
+          /(\/\/.*|"[^"]*"|'[^']*'|`[^`]*`|\b(?:const|let|function|return|if|import|from|export|async|await|new|true|false|default)\b|\b\d+\b|\b[a-zA-Z_]+(?=\())/g,
+        );
+        return parts.map((p, i) => {
+          let c = "";
+          if (/^\/\//.test(p)) c = "c";
+          else if (/^["'`]/.test(p)) c = "s";
+          else if (
+            /^(const|let|function|return|if|import|from|export|async|await|new|default)$/.test(
+              p,
+            )
+          )
+            c = "k";
+          else if (/^(true|false|\d+)$/.test(p)) c = "n";
+          else if (/^[a-zA-Z_]+$/.test(p) && i % 2 === 1) c = "f";
+          return c ? (
+            <span key={i} className={c}>
+              {p}
+            </span>
+          ) : (
+            p
+          );
+        });
+      }
+      const Code = ({ code, numbers }) => (
+        <div className="code">
+          {numbers ? (
+            <div className="lines">
+              <div className="ln">
+                {code.split("\n").map((_, i) => (
+                  <div key={i}>{i + 1}</div>
+                ))}
+              </div>
+              <div>
+                <Hl code={code} />
+              </div>
+            </div>
+          ) : (
+            <Hl code={code} />
+          )}
+        </div>
+      );
+
+      /* Header */
+      function Header({ page }) {
+        const [open, setOpen] = useState(false);
+        return (
+          <header>
+            <a className="brand" href="#hello" onClick={() => setOpen(false)}>
+              _Pooja_Shree_S
+            </a>
+            <button
+              className="burger"
+              aria-label="Toggle menu"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? "✕" : "☰"}
+            </button>
+            <nav className={open ? "open" : ""}>
+              {PAGES.map((p) => (
+                <a
+                  key={p}
+                  href={"#" + p}
+                  className={page === p ? "active" : ""}
+                  onClick={() => setOpen(false)}
+                >
+                  _{p}
+                </a>
+              ))}
+              <a className="gh" href={GH} target="_blank" rel="noreferrer">
+                github-profile ↗
+              </a>
+            </nav>
+          </header>
+        );
+      }
+
+      function Footer() {
+        const I = ({ href, children, cls = "" }) => (
+          <a
+            className={"ico " + cls}
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {children}
+          </a>
+        );
+        return (
+          <footer>
+            <div className="lbl">find me in:</div>
+
+            <I href="https://www.linkedin.com/in/pooja-shree-s-/">
+              <span title="LinkedIn">in</span>
+            </I>
+            <I href={GH}>
+              <span title="GitHub">{"</>"}</span>
+            </I>
+            <I href={GH} cls="last">
+              @_Pooja_Shree_S ↗
+            </I>
+          </footer>
+        );
+      }
+
+      /* Developer Profile Card */
+
+      function ProfileCard() {
+        const skills = [
+          "HTML",
+          "CSS",
+          "JavaScript",
+          "React",
+          "TypeScript",
+          "Node.js",
+          "Express.js",
+          "MongoDB",
+          "Bootstrap",
+          "Axios",
+          "GitHub",
+        ];
+
+        return (
+          <div className="profile-card">
+            <div className="avatar-large">PS</div>
+
+            <h2>POOJA SHREE S</h2>
+
+            <div className="profile-role">&gt; MERN Stack Developer</div>
+
+            <div className="cm">
+              <div className="c">//profile View</div>
+              <br />
+
+              <div>
+                <span className="k">const</span>{" "}
+                <span className="f">developer</span> = {"{"}
+              </div>
+
+              <div>
+                &nbsp;&nbsp;role:{" "}
+                <span className="s">"MERN Stack Developer"</span>,
+              </div>
+
+              <div>
+                &nbsp;&nbsp;passion:{" "}
+                <span className="s">"Building Web Applications"</span>,
+              </div>
+
+              <div>
+                &nbsp;&nbsp;learning:{" "}
+                <span className="s">"AI Full Stack Development"</span>
+              </div>
+
+              <div>{"}"}</div>
+            </div>
+
+            <br />
+            <div className="profile-status">● Available for opportunities</div>
+          </div>
+        );
+      }
+
+      function Hello() {
+        return (
+          <section className="hello">
+            <div>
+              <p className="k">Hi all. I am</p>
+              <h1>POOJA SHREE S</h1>
+              <div className="role">&gt; MERN Stack Developer</div>
+              <div className="cm">
+                <div className="c">// Welcome to my developer portfolio</div>
+
+                <div className="c">
+                  // Passionate about building modern web applications
+                </div>
+
+                <br />
+
+                <div>
+                  <span className="k">const</span>{" "}
+                  <span className="f">Goal</span> ={" "}
+                  <a target="_blank" rel="noreferrer">
+                    "Turning ideas into reality";
+                  </a>
+                </div>
+              </div>
+              <br />
+              <a href="#projects" className="btn">
+                view-projects
+              </a>{" "}
+            </div>
+            <ProfileCard />
+          </section>
+        );
+      }
+
+      /* About */
+      const FILES = {
+        bio: {
+          title: "MY BIO",
+          color: "var(--teal)",
+          text: [
+            "Hi, I am Pooja shree , a Mern Stack developer .  Where i can Build a fast and accessible with delightful interfaces for the real-time projects.",
+            "I started tinkering with HTML and CSS , then fell for JavaScript soon after and have been shipping in Reactjs . I care about clean component design, performance budgets, and tiny details like easing curves.",
+          ],
+          snippets: [
+            [
+              "a1c93f2",
+              "",
+              `// bio.js
+      const Pooja = {
+        role: "Mern Stack developer",
+        focus: ["Reactjs", "javascript","Bootstrap"],
+        }`,
+            ],
+            [
+              "7be40d1",
+              "",
+              `function greet(name) {
+        return \`Hello, \${name}!\`
+      }
+      greet("world") // ship it`,
+            ],
+          ],
+        },
+        Certificates: {
+          title: "Certificates",
+          color: "var(--purple)",
+          text: [
+            "> AI Full Stack Web Development Course & Internship — Courseinn Academy",
+            "> Udemy Clone Internship Certificate — Udemy",
+            "> IoT (Internet of Things) Student Enablement Program",
+          ],
+          snippets: [
+            [
+              "5d08ab9",
+              "",
+              `const Certificates = [
+        "Mern stack",
+        "Udemy clone",
+        "IOT"
+        ]`,
+            ],
+          ],
+        },
+        education: {
+          title: "education",
+          color: "var(--orange)",
+          text: [
+            "> Sdnb Vaishnav College For Women - (Madras University)",
+            "B.Sc. Computer Science, (2021 – 2024)",
+            "Graduated with honor. Passionate about applying my knowledge to real-world software projects.",
+            "> Sacred Heart Matric Higher Secondary School",
+            "Maths with Computer science (2020- 2021)",
+            "Completed Higher Secondary Education in Computer Science, a strong foundation in analytical thinking in programming concepts.",
+          ],
+
+          snippets: [
+            [
+              "e3c1f77",
+              "",
+              `export const education = {
+        degree: "B.Sc. Computer Science",
+        years: [2021, 2024],
+        honors: true
+      }`,
+            ],
+          ],
+        },
+        experience: {
+          title: "experience",
+          color: "var(--sky)",
+          text: [
+            "Omega Healthcare Private Limited",
+            "Process Executive — Credit Balance =>  (2 years 1 Month)",
+            "> Managed US healthcare credit balance processes, refunds, and adjustments.",
+            "> Coordinated with internal teams to resolve billing and payment-related issues.",
+            "> Developed strong attention to detail, problem-solving, and process-management skills.",
+          ],
+          snippets: [
+            [
+              "b92d4e0",
+              "2 years 1 month",
+              `async function ship(feature) {
+        await review(feature)
+        if (tests.pass) {
+          return deploy(feature)
+        }
+      }`,
+            ],
+          ],
+        },
+        skills: {
+          title: "skills",
+          color: "var(--rose)",
+          text: [
+            "React",
+            "TypeScript",
+            "JavaScript",
+            "HTML5",
+            "CSS3",
+            "Bootstrap",
+            "Nodejs",
+            "Databases",
+            "MangoDB",
+            "Github",
+            "Web accessibility",
+            "Performance tuning.",
+          ],
+          snippets: [
+            [
+              "0f6a2c8",
+              "",
+              `const skills = {
+        languages: ["JS", "TS", "CSS"],
+        frameworks: ["React"],
+      }`,
+            ],
+          ],
+        },
+      };
+      const TREE = [
+        {
+          name: "personal-info",
+          color: "var(--teal)",
+          kids: ["bio", "Certificates", "education"],
+        },
+        {
+          name: "professional-info",
+          color: "var(--purple)",
+          kids: ["experience", "skills"],
+        },
+      ];
+      function About() {
+        const [open, setOpen] = useState({
+          "personal-info": true,
+          "professional-info": false,
+        });
+        const [sel, setSel] = useState("bio");
+        const f = FILES[sel];
+        return (
+          <section className="split about">
+            <aside className="pane">
+              <div className="ptitle">▾ about-me</div>
+              <div className="tree">
+                {TREE.map((d) => (
+                  <div key={d.name}>
+                    <button
+                      className="row"
+                      onClick={() =>
+                        setOpen({ ...open, [d.name]: !open[d.name] })
+                      }
+                    >
+                      <span className={"arr" + (open[d.name] ? " open" : "")}>
+                        ▶
+                      </span>
+                      <span className="dotc" style={{ background: d.color }} />
+                      {d.name}
+                    </button>
+                    {open[d.name] &&
+                      d.kids.map((k) => (
+                        <button
+                          key={k}
+                          className={"row ch" + (sel === k ? " sel" : "")}
+                          onClick={() => setSel(k)}
+                        >
+                          <span style={{ color: FILES[k].color }}>▪</span>
+                          {k}
+                        </button>
+                      ))}
+                  </div>
+                ))}
+              </div>
+            </aside>
+            <div className="pane">
+              <div className="ptitle tab">
+                <span>{f.title}</span>
+                <span className="x">✕</span>
+              </div>
+              <div className="pbody">
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 12,
+                    alignItems: "center",
+                    marginBottom: 10,
+                  }}
+                >
+                  <span className="avatar">MW</span>
+                  <div
+                    className="mono"
+                    style={{ color: "var(--bright)", fontSize: 14 }}
+                  >
+                    /**
+                    <br />
+                    &nbsp;* {f.title}
+                  </div>
+                </div>
+                {sel === "skills" ? (
+                  <div className="skills-grid">
+                    {f.text.map((t, i) => (
+                      <div className="skill-item" key={i}>
+                        {t}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  f.text.map((t, i) => <p key={i}>{t}</p>)
+                )}
+              </div>
+            </div>
+            <div className="pane">
+              <div className="ptitle">// Code snippet showcase:</div>
+              <div className="pbody">
+                {f.snippets.map(([h, when, code]) => (
+                  <div className="snip" key={h}>
+                    <div className="meta">
+                      <b>@_Pooja_Shree_S {h}</b>
+                      <span>{when}</span>
+                    </div>
+                    <Code code={code} numbers />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      const TECH = [
+        "React",
+        "HTML",
+        "CSS",
+        "Javascript",
+        "Axios",
+        "AI-Integration",
+      ];
+
+      const PROJECTS = [
+        {
+          n: 1,
+          name: "Tour Booking",
+          tech: ["React", "Javascript", "CSS", "HTML"],
+          image:
+            "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
+          github: "https://spoojashree2003-ux.github.io/Tourbooking/",
+          g: ["#175559", "#4d5bce"],
+          d: "Created a user-friendly travel booking platform to explore destinations and plan memorable trips.",
+        },
+        {
+          n: 2,
+          name: "User-management",
+          tech: ["React", "Axios", "TypeScript", "API"],
+          image:
+            "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800",
+          github: "https://spoojashree2003-ux.github.io/user-management/",
+
+          g: ["#4d5bce", "#c98bdf"],
+          d: "Developed a user management application using React, TypeScript and Axios, implementing interfaces and type-safe API integration.",
+        },
+        {
+          n: 3,
+          name: "Users",
+          tech: ["HTML", "CSS", "Javascript"],
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkyOha6J5k4RPg3pz4yamnrq3tFC0ELny4OSLpRMYa1g&s=10",
+          github: "https://spoojashree2003-ux.github.io/users/",
+
+          g: ["#4d5bce", "#c98bdf"],
+          d: "Developed a user details application using ReactJS and JavaScript to fetch and display API data.",
+        },
+        {
+          n: 4,
+          name: "Waterfall",
+          tech: ["HTML", "CSS", "Javascript", "AI-Integration"],
+          image:
+            "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=800",
+          github: "https://spoojashree2003-ux.github.io/waterfall/",
+          g: ["#fea55f", "#c98bdf"],
+          d: "Designed a waterfall-themed travel webpage showcasing beautiful destinations with attractive visuals and a responsive user-friendly layout.",
+        },
+        {
+          n: 5,
+          name: "Escape To Wayanad",
+          tech: ["HTML", "CSS", "Javascript", "AI-Integration"],
+          image:
+            "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800",
+          github: "https://spoojashree2003-ux.github.io/wayanad/",
+          g: ["#175559", "#43d9ad"],
+          d: "Created a travel website showcasing Wayanad's beautiful destinations, nature attractions, and travel experiences with a responsive and user-friendly design.",
+        },
+        {
+          n: 6,
+          name: "Grid-Gallery",
+          tech: ["HTML", "CSS"],
+          image:
+            "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800",
+          github: "https://spoojashree2003-ux.github.io/gallery/",
+          g: ["#3a8bd9", "#4d5bce"],
+          d: "A Grid Gallery is a portfolio section that displays projects, images, or work samples in an organized row-and-column layout.",
+        },
+      ];
+      function Projects() {
+        const [sel, setSel] = useState([]);
+
+        const shown = useMemo(
+          () =>
+            PROJECTS.filter(
+              (p) => !sel.length || p.tech.some((t) => sel.includes(t)),
+            ),
+          [sel],
+        );
+        const toggle = (t) =>
+          setSel((s) => (s.includes(t) ? s.filter((x) => x !== t) : [...s, t]));
+        return (
+          <section className="split projects">
+            <aside className="pane">
+              <div className="ptitle">▾ projects</div>
+              <div style={{ padding: "8px 0" }}>
+                {TECH.map((t) => (
+                  <label
+                    key={t}
+                    className={"chk" + (sel.includes(t) ? " on" : "")}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={sel.includes(t)}
+                      onChange={() => toggle(t)}
+                    />
+                    <span className="box">{sel.includes(t) ? "✓" : ""}</span>
+                    {t}
+                  </label>
+                ))}
+                {sel.length > 0 && (
+                  <div style={{ padding: "10px 20px" }}>
+                    <button className="btn ghost" onClick={() => setSel([])}>
+                      clear-filters
+                    </button>
+                  </div>
+                )}
+              </div>
+            </aside>
+            <div>
+              <div className="projects-container">
+                {shown.map((project) => (
+                  <div className="project-card" key={project.n}>
+                    {/* Project Image */}
+
+                    <div className="project-image">
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={`View ${project.name} on GitHub`}
+                      >
+                        <img src={project.image} alt={project.name} />
+                      </a>
+                    </div>
+
+                    {/* Project Details */}
+                    <div className="project-content">
+                      <h3>{project.name}</h3>
+
+                      <p>{project.d}</p>
+
+                      <div className="project-tech">
+                        {project.tech.map((item, index) => (
+                          <span key={index}>{item}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      /* Contact */
+      function Contact() {
+        const [f, setF] = useState({ name: "", email: "", message: "" });
+        const [errs, setErrs] = useState({});
+        const [done, setDone] = useState(false);
+        const [open, setOpen] = useState({ contacts: true, find: false });
+        const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
+        const today = new Date().toLocaleDateString("en-US", {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+        });
+        const submit = (e) => {
+          e.preventDefault();
+          const er = {};
+          if (!f.name.trim()) er.name = "name is required";
+          if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email))
+            er.email = "enter a valid email";
+          if (f.message.trim().length < 5) er.message = "message is too short";
+          setErrs(er);
+          if (!Object.keys(er).length) setDone(true);
+        };
+        const code = `const button = document.querySelector('#sendBtn');
+
+      const message = {
+        name: "${f.name}",
+        email: "${f.email}",
+        message: "${f.message.replace(/\n/g, " ")}",
+        date: "${today}"
+      }
+
+      button.addEventListener('click', () => {
+        form.send(message);
+      })`;
+        const Sec = ({ id, title, children }) => (
+          <div>
+            <button
+              className="row"
+              style={{
+                display: "flex",
+                gap: 8,
+                padding: "10px 20px",
+                background: "none",
+                border: 0,
+                color: "var(--bright)",
+                font: "inherit",
+                cursor: "pointer",
+                width: "100%",
+                textAlign: "left",
+                borderTop: "1px solid var(--line)",
+              }}
+              onClick={() => setOpen({ ...open, [id]: !open[id] })}
+            >
+              <span className={"arr" + (open[id] ? " open" : "")}>▶</span>
+              {title}
+            </button>
+            {open[id] && children}
+          </div>
+        );
+        return (
+          <section className="split contact">
+            <aside className="pane">
+              <div className="ptitle">▾ contacts</div>
+              <div className="cinfo">
+                <Sec id="contacts" title="direct">
+                  <a className="item" href="mailto:spoojashree2003@gmail.com">
+                    ✉ spoojashree2003@gmail.com
+                  </a>
+                  <a className="item" href="tel:+15551234567">
+                    ☎ +91 8056012190
+                  </a>
+                </Sec>
+                <Sec id="find" title="find-me-also-in">
+                  <a
+                    className="item"
+                    href={GH}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    ▪ GitHub
+                  </a>
+                  <a
+                    className="item"
+                    href="https://www.linkedin.com/in/pooja-shree-s-/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    ▪ LinkedIn
+                  </a>
+                </Sec>
+              </div>
+            </aside>
+            <div className="pane">
+              <div className="ptitle tab">
+                <span>contacts</span>
+                <span className="x">✕</span>
+              </div>
+              {done ? (
+                <div className="thanks">
+                  <div style={{ fontSize: 40 }}>🎉</div>
+                  <h3>Thank you! 🤘</h3>
+                  <p>
+                    Your message has been accepted. You will receive an answer
+                    really soon!
+                  </p>
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      setF({ name: "", email: "", message: "" });
+                      setDone(false);
+                    }}
+                  >
+                    send-new-message
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={submit} noValidate>
+                  <label>
+                    _name
+                    <input
+                      type="text"
+                      value={f.name}
+                      onChange={set("name")}
+                      placeholder="Jonathan Davis"
+                    />
+                    {errs.name && <span className="err">{errs.name}</span>}
+                  </label>
+                  <label>
+                    _email
+                    <input
+                      type="email"
+                      value={f.email}
+                      onChange={set("email")}
+                      placeholder="jonathan@email.com"
+                    />
+                    {errs.email && <span className="err">{errs.email}</span>}
+                  </label>
+                  <label>
+                    _message
+                    <textarea
+                      value={f.message}
+                      onChange={set("message")}
+                      placeholder="Say hello…"
+                    />
+                    {errs.message && (
+                      <span className="err">{errs.message}</span>
+                    )}
+                  </label>
+                  <button
+                    className="btn"
+                    id="send-btn"
+                    type="submit"
+                    style={{ alignSelf: "flex-start" }}
+                  >
+                    submit-message
+                  </button>
+                </form>
+              )}
+            </div>
+            <div className="pane codepane">
+              <div className="ptitle">// live preview</div>
+              <div className="pbody">
+                <Code code={code} numbers />
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      /* App with hash routing */
+      function App() {
+        const read = () => {
+          const h = location.hash.replace("#", "");
+          return PAGES.includes(h) ? h : "hello";
+        };
+        const [page, setPage] = useState(read);
+        useEffect(() => {
+          const on = () => {
+            setPage(read());
+            window.scrollTo(0, 0);
+          };
+          window.addEventListener("hashchange", on);
+          return () => window.removeEventListener("hashchange", on);
+        }, []);
+        const View = {
+          hello: Hello,
+          "about-me": About,
+          projects: Projects,
+          "contact-me": Contact,
+        }[page];
+        return (
+          <div className="app">
+            <Header page={page} />
+            <main key={page}>
+              <View />
+            </main>
+            <Footer />
+          </div>
+        );
+      }
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
